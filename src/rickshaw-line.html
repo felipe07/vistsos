@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta chartset="UTF-8"/>
+  <link type="text/css" rel="stylesheet" href="http://code.shutterstock.com/rickshaw/src/css/graph.css">
+  <link type="text/css" rel="stylesheet" href="http://code.shutterstock.com/rickshaw/src/css/detail.css">
+  <link type="text/css" rel="stylesheet" href="http://code.shutterstock.com/rickshaw/src/css/legend.css">
+  <link type="text/css" rel="stylesheet" href="http://code.shutterstock.com/rickshaw/examples/css/lines.css">
+  <script src="http://code.shutterstock.com/rickshaw/vendor/d3.v3.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>	
+  <script src="http://code.shutterstock.com/rickshaw/rickshaw.js"></script>
+  <script src="http://code.shutterstock.com/rickshaw/src/js/Rickshaw.Graph.Axis.Y.js"></script>
+  <style>
+    #container {
+      width: auto;
+    }
+    #chart_container {
+      width: auto;
+      left: 20px;
+      top: 20px;
+    }
+    #chart {
+      position: relative;
+    }
+    #snippet {
+      position: relative;
+      left: 20px;
+      top: 50px;
+    }
+    #x_axis {
+      position: relative;
+      left: 0px;
+      height: 20px;
+    }
+    #y_axis {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 0px;
+    }
+    #legend_container {
+      position: absolute;
+      left: 800px;
+    }
+  </style>
+</head>
+<body>
+  <div id="container">
+    <div id="chart_container">
+      <div id="y_axis"></div>
+      <div id="chart"></div>
+      <div id="x_axis"></div>
+      <div id="legend_container">
+        <div id="legend"></div>
+      </div>
+    </div>
+    <div id="snippet">
+      <textarea id="snipped_text" rows="13" cols="80" readonly></textarea>
+    </div>
+  </div>
+
+  <script id="chartCode" type="text/javascript">
+
+    $("#snippet").find("#snipped_text").html($("#chartCode").html());
+
+    var timestamps = {};
+
+    var yAxisFormat = function(y) {
+      var abs_y = Math.abs(y);
+      if (abs_y >= 6.0) { return y + "mm"}
+      else if (abs_y >= 5.0) { return y + "mm"}
+      else if (abs_y >= 4.0) { return y + "mm"}
+      else if (abs_y >= 3.0) { return y + "mm"}
+      else if (abs_y >= 2.0) { return y + "mm"}
+      else if (abs_y >= 1.0) { return y + "mm"}
+      else if (abs_y > 0.0 && abs_y < 1.0) { return y + "mm"}
+      else if (abs_y === 0.0) { return "" }
+      else { return y }
+    };
+
+    var graph = new Rickshaw.Graph.Ajax( {
+      element: document.getElementById("chart"),
+      width: 800,
+      height: 300,
+      renderer: "line",
+      dataURL: "http://131.175.143.71/istsos/test?" +
+               "service=SOS&version=1.0.0&request=GetObservation&offering=offering1" +
+               "&procedure=MI_Lambrate_Precipitazione&eventTime=2015-01-15T00:00:00+0200/2015-01-23T00:00:00+0200&" +
+               "observedProperty=rainfall&aggregateInterval=PT24H&aggregateFunction=SUM&" +
+               "responseFormat=application/json",
+      onData: function(d) { 
+        var values = d.ObservationCollection.member[0].result.DataArray.values;
+        var dataArrayWithKeys = []
+		
+        for (var i = 0; i < values.length; i++) {
+
+          var timestamp = Date.parse(values[i][0]);
+          timestamps[i] = timestamp;
+          
+          var rainfallMeasurement = parseFloat(values[i][1]);
+
+          var measurement = {
+            "x": i,
+            "y": rainfallMeasurement
+          }
+          dataArrayWithKeys.push(measurement);
+        }
+ 
+        var data = {
+          "name": "rainfall",
+          "data": dataArrayWithKeys
+        } 
+      
+        var dataArray = [];
+        dataArray.push(data);
+
+        return dataArray;
+      },
+      onComplete: function(transport) {
+        var graph = transport.graph;
+
+        var x_axis = new Rickshaw.Graph.Axis.X( {
+          graph: graph,
+          element: document.getElementById("x_axis"),
+          tickFormat: function(x) { 
+            //return new Date(timestamps[x]).toUTCString();
+            return new Date(timestamps[x]).toLocaleDateString(); 
+          }
+        });
+        x_axis.render();
+
+        var y_axis = new Rickshaw.Graph.Axis.Y( {
+          graph: graph,
+          tickFormat: yAxisFormat,
+          element: document.getElementById("y_axis")
+        } );
+        y_axis.render();
+
+        var legend = new Rickshaw.Graph.Legend( {
+          graph: graph,
+	  element: document.getElementById("legend")
+        } );
+
+        var detail = new Rickshaw.Graph.HoverDetail( { 
+          graph: graph
+          /*formatter: function(x, y) {
+            //return timestamps[x];
+            //return new Date(timestamps[x]).toUTCString();
+          }*/
+        } );
+
+        /*var shelving = new Rickshaw.Graph.Behavior.Series.Toggle( {
+          graph: graph,
+          legend: legend
+        } );*/
+      },
+      series: [
+        {
+          name: "rainfall",
+          color: "#00A800"
+        }
+      ]
+    } );  
+
+  </script>
+</body>
+</html>
