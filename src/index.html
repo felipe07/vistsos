@@ -1,8 +1,36 @@
 <html>
   <head>
+    <meta charset="utf-8">
     <title>Charts home</title>
+    <script src="//d3js.org./d3.v3.min.js"></script>
+    <script src="//vega.github.io/vega/vega.js"></script>
+    <script src="//vega.github.io/vega-lite/vega-lite.js"></script>
+    <script src="//vega.github.io/vega-editor/vendor/vega-embed.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment.min.js"></script> 
+    <script src="data/lines-data.js"></script>
+    <style>
+      .tooltip {
+        width: 100%;
+        display: block;
+      }
+      .vega-actions a {
+        margin-right: 5px;
+      }
+    </style>
   </head>
   <body>
-    <h1>Welcome</h1>
+    <!-- <div id="tooltip"><iframe src="vega-tooltip.html"></iframe></div> -->
+    <div id="lines"></div>
+    <script>
+      var embedSpec = {
+        mode: "vega-lite",
+        url: "specs/lines-spec" 
+      }
+
+      vg.embed("#lines", embedSpec, function(error, result) {
+   
+      });
+    </script>
   </body>
 </html>
