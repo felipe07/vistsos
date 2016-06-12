@@ -8,7 +8,6 @@
     <script src="//vega.github.io/vega-editor/vendor/vega-embed.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment.min.js"></script> 
-    <script src="data/lines-data.js"></script>
     <style>
       .tooltip {
         width: 100%;
@@ -17,20 +16,45 @@
       .vega-actions a {
         margin-right: 5px;
       }
+     .line-between {
+       border: 1px solid #96928F;
+       margin-left: 10px;
+       margin-right: 10px;
+     }
     </style>
   </head>
   <body>
-    <!-- <div id="tooltip"><iframe src="vega-tooltip.html"></iframe></div> -->
-    <div id="lines"></div>
+    <div id="lines"></div><hr class="line-between" />
+    <div id="bars"></div><hr class="line-between" />
+    <div id="grouped"></div><hr class="line-between" />
+    <div id="tooltip"></div><hr class="line-between" />
+
     <script>
-      var embedSpec = {
+      var embedSpecLines = {
         mode: "vega-lite",
         url: "specs/lines-spec" 
       }
+  
+      var embedSpecBars = {
+        mode: "vega-lite",
+        url: "specs/bars-spec" 
+      }  
 
-      vg.embed("#lines", embedSpec, function(error, result) {
-   
-      });
+      var embedSpecGrouped = {
+        mode: "vega-lite",
+        url: "specs/grouped-spec" 
+      }
+ 
+      var embedSpecTooltip = {
+        mode: "vega",
+        url: "specs/tooltip-spec" 
+      }
+
+
+      vg.embed("#lines", embedSpecLines, function(error, result) { });
+      vg.embed("#bars", embedSpecBars, function(error, result) { });
+      vg.embed("#grouped", embedSpecGrouped, function(error, result) { });
+      vg.embed("#tooltip", embedSpecTooltip, function(error, result) { });
     </script>
   </body>
 </html>

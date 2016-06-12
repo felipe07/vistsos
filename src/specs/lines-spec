@@ -1,8 +1,7 @@
 {
   "description": "Aggregated daily rainfall January 2015 - June 2015 Milano Lambrate.",
   "data": { 
-    "name": "measurements",
-    "values": "data/lines-data.json" 
+    "url": "data/lines-data.json" 
   },
   "mark": "line",
   "encoding": {
