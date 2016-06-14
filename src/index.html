@@ -28,6 +28,8 @@
     <div id="bars"></div><hr class="line-between" />
     <div id="grouped"></div><hr class="line-between" />
     <div id="tooltip"></div><hr class="line-between" />
+    <div id="punch-card"></div><hr class="line-between" />
+    <div id="heat-map"></div><hr class="line-between" />
 
     <script>
       var embedSpecLines = {
@@ -49,12 +51,23 @@
         mode: "vega",
         url: "specs/tooltip-spec" 
       }
+    
+      var embedSpecPunchCard = {
+        mode: "vega-lite",
+        url: "specs/punch-card-spec" 
+      }
 
+      var embedSpecHeatMap = {
+        mode: "vega",
+        url: "specs/heat-map-spec" 
+      }
 
       vg.embed("#lines", embedSpecLines, function(error, result) { });
       vg.embed("#bars", embedSpecBars, function(error, result) { });
       vg.embed("#grouped", embedSpecGrouped, function(error, result) { });
       vg.embed("#tooltip", embedSpecTooltip, function(error, result) { });
+      vg.embed("#punch-card", embedSpecPunchCard, function(error, result) { });
+      vg.embed("#heat-map", embedSpecHeatMap, function(error, result) { });
     </script>
   </body>
 </html>
