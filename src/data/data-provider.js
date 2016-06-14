@@ -2,9 +2,12 @@ var path = "localhost/istsos/test?" +
            "service=SOS&version=1.0.0&" +
            "request=GetObservation&" + 
            "offering=offering1&" +
-           "procedure=MI_Lambrate_Temperatura&" +
-           "eventTime=2015-01-01T00:00:00+0200/2015-06-30T23:00:00+0200&" +
-           "observedProperty=temperature&" +
+           //"procedure=MI_Lambrate_Temperatura&" +
+           "procedure=MI_Lambrate_Precipitazione&" +
+           "eventTime=2015-06-15T00:00:00+0200/2015-06-30T23:00:00+0200&" +
+           "observedProperty=rainfall&" +
+           "qualityIndex=True&" +
+           "qualityFilter=>110&" +
            "responseFormat=application/json";
 
 var request = require("request"), 
@@ -22,13 +25,15 @@ request({ url: url },
       
       for (var i = 0; i < values.length; i++) {
         var measurement = {
-          "date": values[i][0],
-          "temperature": values[i][1]
+          "x": i,
+          //"temperature": values[i][1]
+          "y": values[i][1]
         }
         measurements.push(measurement);
       }
 
-      require("fs").writeFile("data/temp6months.json", 
+      //require("fs").writeFile("data/temp6months.json", 
+      require("fs").writeFile("data/rainfallJune15days.json", 
         JSON.stringify(measurements),
         "utf8",
         function(err) {
