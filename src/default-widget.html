@@ -1,0 +1,49 @@
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>istSOS Chart Widget</title>
+    <script src="//d3js.org./d3.v3.min.js"></script>
+    <script src="//vega.github.io/vega/vega.js"></script>
+    <script src="//vega.github.io/vega-lite/vega-lite.js"></script>
+    <script src="//vega.github.io/vega-editor/vendor/vega-embed.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment.min.js"></script> 
+    <script src="data/javascript/data-provider.js"></script> 
+    <script src="util/util.js"></script> 
+    <style>
+      .tooltip {
+        width: 100%;
+        display: block;
+      }
+      .vega-actions a {
+        margin-right: 5px;
+      }
+    </style>  
+    <script>
+      var chartType = getURLParameter("chart");
+      var from = getURLParameter("from");
+      var until = getURLParameter("until");
+
+      if (moment.utc(from).isValid() && moment.utc(until).isValid()) {
+        var data = getData(from, until);
+        var jsonSpec = {};
+        
+        if (chartType == "line") {
+          jsonSpec = getJSONSpec("default-lines-spec");
+        } else if (chartType = "bar") {
+          jsonSpec = getJSONSpec("default-bars-spec");
+        }
+
+        $( document ).ready(function() {
+          jsonSpec.data.values = data;
+        
+          var embedSpec = { mode: "vega-lite", spec: jsonSpec };
+          vg.embed("#chart", embedSpec, function(error, result) { });
+        }); 
+      }
+    </script>
+  </head>
+  <body>
+    <div id="chart"></div>
+  </body>
+</html>
