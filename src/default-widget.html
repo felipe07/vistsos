@@ -25,11 +25,11 @@
       var until = getURLParameter("until");
 
       if (moment.utc(from).isValid() && moment.utc(until).isValid()) {
-        var data = getData(from, until);
+        var data = getData(from, until); // from data-provider.js
         var jsonSpec = {};
         
         if (chartType == "line") {
-          jsonSpec = getJSONSpec("default-lines-spec");
+          jsonSpec = getJSONSpec("default-lines-spec"); // from util.js
         } else if (chartType = "bar") {
           jsonSpec = getJSONSpec("default-bars-spec");
         }
