@@ -27,6 +27,7 @@
       var until = getURLParameter("until");
       var jsonSpec = {};
       var measurements = [];
+      var vegaMode = "vega-lite"
 
       if (moment.utc(from).isValid() && moment.utc(until).isValid()) {
         getData(from, until); // from data-provider.js
@@ -34,19 +35,38 @@
 
       function loadSpec(data) {
         measurements = data;
-
+        
         if (chartType == "line") {
           getJSONSpec("default-lines-spec"); // from util.js
-        } else if (chartType = "bar") {
+        } else if (chartType == "bar") {
           getJSONSpec("default-bars-spec");
+        } else if (chartType == "punch-card") {
+          getJSONSpec("default-punch-card-spec");
+        } else if (chartType == "scatterplot") {
+          getJSONSpec("default-scatterplot-spec");
+        } else if (chartType == "overview-detail") {
+          vegaMode = "vega";
+          getJSONSpec("default-overview-detail-spec");
         }
       }
 
-      function embedChart(jsonSpec) {
-        console.log("hello");
-        jsonSpec.data.values = measurements;
+      function embedChart(jsonSpec) { 
+        if (chartType == "overview-detail") {
+          jsonSpec.data[0].values = measurements;
 
-        var embedSpec = { mode: "vega-lite", spec: jsonSpec };
+          var sfrom = moment(from).format("MMM d YYYY");
+          var suntil = moment(until).format("MMM d YYYY");
+
+          jsonSpec.signals[1].init.expr = "datetime('" + sfrom + "')";
+          jsonSpec.signals[2].init.expr = "datetime('" + sfrom + "')";
+          jsonSpec.signals[2].expr = "time(brush_start) === time(brush_end) ? datetime('" + sfrom + "') : min(brush_start, brush_end)";
+          jsonSpec.signals[3].init.expr = "datetime('" + suntil + "')";
+          jsonSpec.signals[3].expr = "time(brush_start) === time(brush_end) ? datetime('" + suntil + "') : max(brush_start, brush_end)";
+        } else {
+          jsonSpec.data.values = measurements;
+        }
+
+        var embedSpec = { mode: vegaMode, spec: jsonSpec };
         vg.embed("#chart", embedSpec, function(error, result) { });
       }
     </script>

@@ -1,0 +1,11 @@
+{
+  "description": "Change this.",
+  "data": {
+    "values" : "[]"
+  },
+  "mark": "point",
+  "encoding": {
+    "x": {"field": "date", "type": "temporal", "scale": {"bandSize": 20}},
+    "y": {"field": "measurement", "type": "quantitative"}
+  }
+}

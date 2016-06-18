@@ -1,0 +1,23 @@
+{
+  "data": { 
+    "values": "[]" 
+  },
+  "mark": "circle",
+  "encoding": {
+    "y": {
+      "field": "date",
+      "type": "temporal",
+      "timeUnit": "day"
+    },
+    "x": {
+      "field": "date",
+      "type": "temporal",
+      "timeUnit": "hours"
+    },
+    "size": {
+      "field": "measurement",
+      "type": "quantitative",
+      "aggregate": "average"
+    }
+  }
+}

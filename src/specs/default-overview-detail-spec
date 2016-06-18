@@ -34,9 +34,9 @@
 
   "data": [
     {
-      "name": "temp6months", 
-      "url": "data/temp6months.json",
-      "format": {"type": "json", "parse": {"temperature": "number", "date": "date"}}
+      "name": "temp", 
+      "values": "[]",
+      "format": {"type": "json", "parse": {"measurement": "number", "date": "date"}}
     }
   ],
 
@@ -45,14 +45,14 @@
       "name": "xOverview",
       "type": "time",
       "range": [0, 720],
-      "domain": {"data": "temp6months", "field": "date"}
+      "domain": {"data": "temp", "field": "date"}
     },
     {
       "name": "yOverview",
       "type": "linear",
       "range": [70, 0],
       "nice": true,
-      "domain": {"data": "temp6months", "field": "temperature"}
+      "domain": {"data": "temp", "field": "measurement"}
     },
     {
       "name": "xDetail",
@@ -66,7 +66,7 @@
       "type": "linear",
       "range": [390, 0],
       "nice": true,
-      "domain": {"data": "temp6months", "field": "temperature"}
+      "domain": {"data": "temp", "field": "measurement"}
     }
   ],
 
@@ -97,11 +97,11 @@
           "marks": [
             {
               "type": "area",
-              "from": {"data": "temp6months"},
+              "from": {"data": "temp"},
               "properties": {
                 "update": {
                   "x": {"scale": "xDetail", "field": "date"},
-                  "y": {"scale": "yDetail", "field": "temperature"},
+                  "y": {"scale": "yDetail", "field": "measurement"},
                   "y2": {"scale": "yDetail", "value": 0},
                   "fill": {"value": "#00A800"}
                 }
@@ -130,11 +130,11 @@
       "marks": [
         {
           "type": "area",
-          "from": {"data": "temp6months"},
+          "from": {"data": "temp"},
           "properties": {
             "update": {
               "x": {"scale": "xOverview", "field": "date"},
-              "y": {"scale": "yOverview", "field": "temperature"},
+              "y": {"scale": "yOverview", "field": "measurement"},
               "y2": {"scale": "yOverview", "value": 0},
               "fill": {"value": "#00A800"}
             }
