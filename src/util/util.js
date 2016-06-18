@@ -2,9 +2,9 @@ function getJSONSpec(specName) {
   var specPath = "specs/" + specName;
   var spec = {};
   $.getJSON(specPath, function(response) {
-    spec = response;
-  })
-  .success(function() { return spec; });
+    console.log("hi");
+    embedChart(response);
+  });
 }
 
 

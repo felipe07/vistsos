@@ -12,7 +12,7 @@
       "axis": {"shortTimeLabels": true, "offset": 2, "ticks": 12, "tickColor": "#00A800"}
     },
     "y": {
-      "field": "Temperature", 
+      "field": "measurement", 
       "type": "quantitative", 
       "axis": {"tickColor": "#00A800"}
     },

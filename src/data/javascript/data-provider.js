@@ -1,8 +1,4 @@
-var from = "2015-01-01T00:00:00+0200";
-var until = "2015-06-30T00:00:00+0200";
-
 function getData(from, until) {
-
   var dataURL = "http://131.175.143.71/istsos/test?" +
                 "service=SOS&version=1.0.0&" +
                 "request=GetObservation&" + 
@@ -14,8 +10,8 @@ function getData(from, until) {
                 //"observedProperty=rainfall&" + 
                 //"aggregateInterval=PT24H&" + 
                 //"aggregateFunction=SUM&" +
-                //"qualityIndex=True&" +
-                //"qualityFilter=>110&" +
+                "qualityIndex=True&" +
+                "qualityFilter=>110&" +
                 "responseFormat=application/json";
  
   var measurements = [];
@@ -33,6 +29,6 @@ function getData(from, until) {
       }
       measurements.push(measurement);
     }
-  })
-  .success(function() { return measurements; });
+    loadSpec(measurements);
+  });
 }

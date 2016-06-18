@@ -20,26 +20,34 @@
       }
     </style>  
     <script>
+      $.ajaxSetup({ async: true });
+
       var chartType = getURLParameter("chart");
       var from = getURLParameter("from");
       var until = getURLParameter("until");
+      var jsonSpec = {};
+      var measurements = [];
 
       if (moment.utc(from).isValid() && moment.utc(until).isValid()) {
-        var data = getData(from, until); // from data-provider.js
-        var jsonSpec = {};
-        
-        if (chartType == "line") {
-          jsonSpec = getJSONSpec("default-lines-spec"); // from util.js
-        } else if (chartType = "bar") {
-          jsonSpec = getJSONSpec("default-bars-spec");
-        }
+        getData(from, until); // from data-provider.js
+      }
 
-        $( document ).ready(function() {
-          jsonSpec.data.values = data;
-        
-          var embedSpec = { mode: "vega-lite", spec: jsonSpec };
-          vg.embed("#chart", embedSpec, function(error, result) { });
-        }); 
+      function loadSpec(data) {
+        measurements = data;
+
+        if (chartType == "line") {
+          getJSONSpec("default-lines-spec"); // from util.js
+        } else if (chartType = "bar") {
+          getJSONSpec("default-bars-spec");
+        }
+      }
+
+      function embedChart(jsonSpec) {
+        console.log("hello");
+        jsonSpec.data.values = measurements;
+
+        var embedSpec = { mode: "vega-lite", spec: jsonSpec };
+        vg.embed("#chart", embedSpec, function(error, result) { });
       }
     </script>
   </head>
