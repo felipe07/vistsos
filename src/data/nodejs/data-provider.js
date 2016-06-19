@@ -11,8 +11,8 @@ var path = "localhost/istsos/test?" +
            "responseFormat=application/json";
 
 var request = require("request"), 
-    login = "admin",
-    password = "polis0s2016",
+    login = "",
+    password = "",
     url = "http://" + login + ":" + password + "@" + path;
 
 request({ url: url },
