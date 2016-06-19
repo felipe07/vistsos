@@ -1,4 +1,4 @@
-function getData(from, until) {
+function getData(property, from, until) {
   var dataURL = "http://131.175.143.71/istsos/test?" +
                 "service=SOS&version=1.0.0&" +
                 "request=GetObservation&" + 
@@ -6,7 +6,7 @@ function getData(from, until) {
                 "procedure=MI_Lambrate_Temperatura&" + 
                 //"procedure=MI_Lambrate_Precipitazione&" +
                 "eventTime=" + from + "/" + until + "&" +
-                "observedProperty=temperature&" + 
+                "observedProperty=" + property + "&" + 
                 //"observedProperty=rainfall&" + 
                 //"aggregateInterval=PT24H&" + 
                 //"aggregateFunction=SUM&" +

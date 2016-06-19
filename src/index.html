@@ -1,100 +1,126 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Charts home</title>
+    <title>Chart Designer</title>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.4/jquery.datetimepicker.css" />
     <script src="//d3js.org./d3.v3.min.js"></script>
     <script src="//vega.github.io/vega/vega.js"></script>
     <script src="//vega.github.io/vega-lite/vega-lite.js"></script>
     <script src="//vega.github.io/vega-editor/vendor/vega-embed.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment.min.js"></script> 
-    <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script> 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.4/build/jquery.datetimepicker.full.min.js"></script>
     <style>
-      .tooltip {
-        width: 100%;
+      .designer {
+        padding-top: 10px;
+        padding-left: 10px;
         display: block;
-      }
-      .vega-actions a {
-        margin-right: 5px;
-      }
-      .line-between {
-        border: 1px solid #96928F;
+      }      
+      .space-between {
+        width: 100px;
+        color: #FFFFFF;
         margin-left: 10px;
         margin-right: 10px;
       }
-      h2 {
-        color: #002200;
-        text-align: center;
-      }  
+      #button {
+        -webkit-border-radius: 28;
+        -moz-border-radius: 28;
+        border-radius: 28px;
+        font-family: Arial;
+        color: #FFFFFF;
+        font-size: 15px;
+        background: #00A800;
+        padding: 8px 15px 8px 15px;
+        text-decoration: none;
+      }
     </style>
   </head>
   <body>
-    <h2>Line chart</h2>
-    <div id="lines"></div><hr class="line-between" />
-    <h2>Bar chart</h2>
-    <div id="bars"></div><hr class="line-between" />
-    <h2>Grouped bar chart</h2>
-    <div id="grouped"></div><hr class="line-between" />
-    <h2>Tooltip chart</h2>
-    <div id="tooltip"></div><hr class="line-between" />
-    <h2>Punch card chart</h2>
-    <div id="punch-card"></div><hr class="line-between" />
-    <h2>Heat map chart</h2>
-    <div id="heat-map"></div><hr class="line-between" />
-    <h2>Overwiew-detail chart</h2>
-    <div id="overview-detail"></div><hr class="line-between" />
-    <h2>Panzoom chart</h2>
-    <div id="panzoom"></div><hr class="line-between" />
+    <div class="designer">
+      <form action="">
+        Observed Property:
+        <select id="property">
+          <option>temperature</option>
+          <option>rainfall</option>
+        </select>
+        <hr class="space-between" />
+        
+        From:
+        <input id="datetimepicker-from" type="text" />
+        <select id="tzoffset"> 
+          <option>-03:00</option>
+          <option>-02:00</option>
+          <option>-01:00</option>
+          <option>+00:00</option>
+          <option>+01:00</option>
+          <option>+02:00</option>
+          <option>+03:00</option>
+          <option>+03:30</option>
+        </select>
+        <hr class="space-between" />
+        
+        To:
+        <input id="datetimepicker-to" type="text" />
+        <hr class="space-between" />
 
-    <script>
-      var embedSpecLines = {
-        mode: "vega-lite",
-        url: "specs/lines-spec" 
-      }
-  
-      var embedSpecBars = {
-        mode: "vega-lite",
-        url: "specs/bars-spec" 
-      }  
+        Chart type:
+        <div>
+          <input type="radio" name="chart" value="line" id="line">
+          <label for="line">Line</label>
+        </div>
+        <div>
+          <input type="radio" name="chart" value="bar" id="bar">
+          <label for="bar">Bar</label>
+        </div>
+        <div>
+          <input type="radio" name="chart" value="punch-card" id="punch-card">
+          <label for="punch-card">Punch Card</label>
+        </div>
+        <div>
+          <input type="radio" name="chart" value="scatterplot" id="scatterplot">
+          <label for="scatterplot">Scatterplot</label>
+        </div>
+        <div>
+          <input type="radio" name="chart" value="overview-detail" id="overview-detail">
+          <label for="overview-detail">Overview Detail</label>
+        </div>
+      </form>
 
-      var embedSpecGrouped = {
-        mode: "vega-lite",
-        url: "specs/grouped-spec" 
-      }
+      <input type="button" id="button" value="Configure" />
+
+      <h3>Embedded Chart:</h3>
+      <textarea id="txt-iframe" rows="5" cols="45" readonly></textarea>
+    </div>
+    
+    <script type="text/javascript">
+      var chartType = "";
+      var property = "";
+      var from = "";
+      var tzoffset = "";
+      var to = "";
+
+      jQuery("#datetimepicker-from").datetimepicker({formatDate: "Y-m-dT", formatTime: "H:i"});
+      jQuery("#datetimepicker-to").datetimepicker();
+     
+      $("input").on("click", function() {
+        chartType = $("input:checked").val();
+      });
  
-      var embedSpecTooltip = {
-        mode: "vega",
-        url: "specs/tooltip-spec" 
-      }
-    
-      var embedSpecPunchCard = {
-        mode: "vega-lite",
-        url: "specs/punch-card-spec" 
-      }
+      $("#button").click(function() {
+        property = $("#property").val();
+        from = $("#datetimepicker-from").val().replace(/\//g, "-").replace(" ", "T");
+        tzoffset = $("#tzoffset").val() 
+        to = $("#datetimepicker-to").val().replace(/\//g, "-").replace(" ", "T");
 
-      var embedSpecHeatMap = {
-        mode: "vega",
-        url: "specs/heat-map-spec" 
-      }
+        var chartUrl = "http://131.175.143.71/charts/src/default-widget.html?" + 
+                       "chart=" + chartType + 
+                       "&property=" + property + 
+                       "&from=" + from +  
+                       "&until=" + to;
+        var iframe = "<iframe name='istSOS-chart' src='" + chartUrl + "' width='720' height='480' scrolling='no' frameborder='0'></iframe>";
 
-      var embedSpecOverviewDetail = {
-        mode: "vega",
-        url: "specs/overview-detail-spec" 
-      }
-    
-      var embedSpecPanzoom = {
-        mode: "vega",
-        url: "specs/panzoom-points-spec" 
-      }
-
-      vg.embed("#lines", embedSpecLines, function(error, result) { });
-      vg.embed("#bars", embedSpecBars, function(error, result) { });
-      vg.embed("#grouped", embedSpecGrouped, function(error, result) { });
-      vg.embed("#tooltip", embedSpecTooltip, function(error, result) { });
-      vg.embed("#punch-card", embedSpecPunchCard, function(error, result) { });
-      vg.embed("#heat-map", embedSpecHeatMap, function(error, result) { });
-      vg.embed("#overview-detail", embedSpecOverviewDetail, function(error, result) { });
-      vg.embed("#panzoom", embedSpecPanzoom, function(error, result) { });
+        $("#txt-iframe").val(iframe);
+      });
     </script>
   </body>
 </html>
