@@ -52,11 +52,10 @@
 
       function embedChart(jsonSpec) { 
         if (chartType == "overview-detail") {
-          jsonSpec.data[0].values = measurements;
-
           var sfrom = moment(from).format("MMM d YYYY");
           var suntil = moment(until).format("MMM d YYYY");
 
+          jsonSpec.data[0].values = measurements;
           jsonSpec.signals[1].init.expr = "datetime('" + sfrom + "')";
           jsonSpec.signals[2].init.expr = "datetime('" + sfrom + "')";
           jsonSpec.signals[2].expr = "time(brush_start) === time(brush_end) ? datetime('" + sfrom + "') : min(brush_start, brush_end)";

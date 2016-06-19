@@ -6,6 +6,7 @@
   "mark": "point",
   "encoding": {
     "x": {"field": "date", "type": "temporal", "scale": {"bandSize": 20}},
-    "y": {"field": "measurement", "type": "quantitative"}
+    "y": {"field": "measurement", "type": "quantitative"},
+    "color": {"value": "#00A800"}
   }
 }
