@@ -15,6 +15,7 @@
         padding-top: 10px;
         padding-left: 10px;
         display: block;
+        float: left;
       }      
       .space-between {
         width: 100px;
@@ -33,6 +34,11 @@
         padding: 8px 15px 8px 15px;
         text-decoration: none;
       }
+      #embedded {
+        padding-top: 50px;
+        padding-right: 100px;
+        float: right;
+      }
     </style>
   </head>
   <body>
@@ -46,8 +52,8 @@
 
         Procedure:
         <select id="procedure">
-          <option>MI_Lambrate_Precipitazione</option>
           <option>MI_Lambrate_Temperatura</option>
+          <option>MI_Lambrate_Precipitazione</option>
         </select>
         <hr class="space-between" />
 
@@ -101,9 +107,11 @@
 
       <input type="button" id="button" value="Configure" />
 
-      <h3>Embedded Chart:</h3>
+      <h3>Code:</h3>
       <textarea id="txt-iframe" rows="5" cols="45" readonly></textarea>
     </div>
+
+    <div id="embedded"></div>
     
     <script type="text/javascript">
       var chartType = "";
@@ -133,6 +141,8 @@
         var iframe = "<iframe name='istSOS-chart' src='" + chartUrl + "' width='720' height='480' scrolling='no' frameborder='0'></iframe>";
 
         $("#txt-iframe").val(iframe);
+
+        $("#embedded").html("<h3>Embedded Chart:</h3>" + iframe);
       });
     </script>
   </body>
