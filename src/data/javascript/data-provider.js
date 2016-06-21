@@ -1,19 +1,17 @@
-function getData(property, from, until) {
+function getData(procedure, property, from, until) {
   var dataURL = "http://131.175.143.71/istsos/test?" +
                 "service=SOS&version=1.0.0&" +
                 "request=GetObservation&" + 
                 "offering=offering1&" +
-                "procedure=MI_Lambrate_Temperatura&" + 
-                //"procedure=MI_Lambrate_Precipitazione&" +
+                "procedure=" + procedure + "&" + 
                 "eventTime=" + from + "/" + until + "&" +
                 "observedProperty=" + property + "&" + 
-                //"observedProperty=rainfall&" + 
                 //"aggregateInterval=PT24H&" + 
                 //"aggregateFunction=SUM&" +
                 "qualityIndex=True&" +
                 "qualityFilter=>110&" +
                 "responseFormat=application/json";
- 
+  console.log(dataURL); 
   var measurements = [];
 
   $.getJSON(dataURL, function(data) {

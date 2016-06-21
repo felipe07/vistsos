@@ -34,11 +34,6 @@
         padding: 8px 15px 8px 15px;
         text-decoration: none;
       }
-      #embedded {
-        padding-top: 50px;
-        padding-right: 100px;
-        float: right;
-      }
     </style>
   </head>
   <body>
@@ -115,6 +110,7 @@
     
     <script type="text/javascript">
       var chartType = "";
+      var procedure = "";
       var property = "";
       var from = "";
       var tzoffset = "";
@@ -128,6 +124,7 @@
       });
  
       $("#button").click(function() {
+        procedure = $("#procedure").val();
         property = $("#property").val();
         from = $("#datetimepicker-from").val().replace(/\//g, "-").replace(" ", "T");
         tzoffset = $("#tzoffset").val() 
@@ -135,10 +132,11 @@
 
         var chartUrl = "http://131.175.143.71/charts/src/default-widget.html?" + 
                        "chart=" + chartType + 
+                       "&procedure=" + procedure +
                        "&property=" + property + 
                        "&from=" + from +  
                        "&until=" + to;
-        var iframe = "<iframe name='istSOS-chart' src='" + chartUrl + "' width='720' height='480' scrolling='no' frameborder='0'></iframe>";
+        var iframe = "<iframe name='istSOS-chart' src='" + chartUrl + "' width='760' height='550' scrolling='no' frameborder='0'></iframe>";
 
         $("#txt-iframe").val(iframe);
 
