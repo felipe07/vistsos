@@ -23,6 +23,7 @@
       $.ajaxSetup({ async: true });
 
       var chartType = getURLParameter("chart");
+      var offering = getURLParameter("offering");
       var procedure = getURLParameter("procedure");
       var property = getURLParameter("property");
       var from = getURLParameter("from");
@@ -32,7 +33,7 @@
       var vegaMode = "vega-lite"
 
       if (moment.utc(from).isValid() && moment.utc(until).isValid()) {
-        getData(procedure, property, from, until); // from data-provider.js
+        getData(offering, procedure, property, from, until); // from data-provider.js
       }
 
       function loadSpec(data) {

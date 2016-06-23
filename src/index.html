@@ -111,6 +111,7 @@
     <script type="text/javascript">
       var host = $(location).attr("href");
       var chartType = "";
+      var offering = "";
       var procedure = "";
       var property = "";
       var from = "";
@@ -125,6 +126,7 @@
       });
  
       $("#button").click(function() {
+        offering = $("#offering").val();
         procedure = $("#procedure").val();
         property = $("#property").val();
         from = $("#datetimepicker-from").val().replace(/\//g, "-").replace(" ", "T");
@@ -133,6 +135,7 @@
 
         var chartUrl = host + "default-widget.html?" + 
                        "chart=" + chartType + 
+                       "&offering=" + offering +
                        "&procedure=" + procedure +
                        "&property=" + property + 
                        "&from=" + from +  

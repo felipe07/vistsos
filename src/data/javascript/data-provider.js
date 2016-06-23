@@ -1,8 +1,8 @@
-function getData(procedure, property, from, until) {
+function getData(offering, procedure, property, from, until) {
   var dataURL = "http://131.175.143.71/istsos/test?" +
                 "service=SOS&version=1.0.0&" +
                 "request=GetObservation&" + 
-                "offering=offering1&" +
+                "offering=" +offering + "&" +
                 "procedure=" + procedure + "&" + 
                 "eventTime=" + from + "/" + until + "&" +
                 "observedProperty=" + property + "&" + 
@@ -11,6 +11,7 @@ function getData(procedure, property, from, until) {
                 "qualityIndex=True&" +
                 "qualityFilter=>110&" +
                 "responseFormat=application/json";
+ 
   var measurements = [];
 
   $.getJSON(dataURL, function(data) {
