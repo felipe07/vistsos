@@ -109,6 +109,7 @@
     <div id="embedded"></div>
     
     <script type="text/javascript">
+      var host = $(location).attr("href");
       var chartType = "";
       var procedure = "";
       var property = "";
@@ -130,7 +131,7 @@
         tzoffset = $("#tzoffset").val() 
         to = $("#datetimepicker-to").val().replace(/\//g, "-").replace(" ", "T");
 
-        var chartUrl = "http://131.175.143.71/charts/src/default-widget.html?" + 
+        var chartUrl = host + "default-widget.html?" + 
                        "chart=" + chartType + 
                        "&procedure=" + procedure +
                        "&property=" + property + 

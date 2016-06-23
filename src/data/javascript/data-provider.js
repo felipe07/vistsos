@@ -11,7 +11,6 @@ function getData(procedure, property, from, until) {
                 "qualityIndex=True&" +
                 "qualityFilter=>110&" +
                 "responseFormat=application/json";
-  console.log(dataURL); 
   var measurements = [];
 
   $.getJSON(dataURL, function(data) {
