@@ -10,6 +10,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.4/build/jquery.datetimepicker.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jscolor/2.0.4/jscolor.js"></script>
     <style>
       .designer {
         padding-top: 10px;
@@ -62,6 +63,17 @@
         From:
         <input id="datetimepicker-from" type="text" />
         <select id="tzoffset"> 
+          <option>-12:00</option>
+          <option>-11:00</option>
+          <option>-10:00</option>
+          <option>-09:30</option>
+          <option>-09:00</option>
+          <option>-08:00</option>
+          <option>-07:00</option>
+          <option>-06:00</option>
+          <option>-05:00</option>
+          <option>-04:00</option>
+          <option>-03:30</option>
           <option>-03:00</option>
           <option>-02:00</option>
           <option>-01:00</option>
@@ -70,6 +82,26 @@
           <option>+02:00</option>
           <option>+03:00</option>
           <option>+03:30</option>
+          <option>+04:00</option>
+          <option>+04:30</option>
+          <option>+05:00</option>
+          <option>+05:30</option>
+          <option>+05:45</option>
+          <option>+06:00</option>
+          <option>+06:30</option>
+          <option>+07:00</option>
+          <option>+08:00</option>
+          <option>+08:30</option>
+          <option>+08:45</option>
+          <option>+09:00</option>
+          <option>+09:30</option>
+          <option>+10:00</option>
+          <option>+10:30</option>
+          <option>+11:00</option>
+          <option>+12:00</option>
+          <option>+12:45</option>
+          <option>+13:00</option>
+          <option>+14:00</option>
         </select>
         <hr class="space-between" />
         
@@ -98,6 +130,10 @@
           <input type="radio" name="chart" value="overview-detail" id="overview-detail">
           <label for="overview-detail">Overview Detail</label>
         </div>
+        <hr class="space-between" />
+
+        Mark Color:
+        <input id="color" class="jscolor" value="00A800">
       </form>
 
       <input type="button" id="button" value="Configure" />
@@ -117,9 +153,29 @@
       var from = "";
       var tzoffset = "";
       var to = "";
+      var color = "";
 
-      jQuery("#datetimepicker-from").datetimepicker({formatDate: "Y-m-dT", formatTime: "H:i"});
-      jQuery("#datetimepicker-to").datetimepicker();
+      //jQuery("#datetimepicker-from").datetimepicker({formatDate: "Y-m-dT", formatTime: "H:i", maxDate: 0});
+      jQuery("#datetimepicker-from").datetimepicker({
+        maxDate: 0,
+        onShow:function(ct) {
+          this.setOptions({
+            maxDate:jQuery("#datetimepicker-to").val()?jQuery("#datetimepicker-to").val():false
+          })
+        }
+      });
+      jQuery("#datetimepicker-to").datetimepicker({
+        maxDate: 0,
+        onShow:function(ct) {
+          this.setOptions({
+            minDate:jQuery("#datetimepicker-from").val()?jQuery("#datetimepicker-from").val():false
+          })
+        }
+      });
+           
+      $("#tzoffset").val("+02:00");
+
+      $(":radio[name='chart'][value='line']").attr("checked", "checked");
      
       $("input").on("click", function() {
         chartType = $("input:checked").val();
@@ -132,19 +188,28 @@
         from = $("#datetimepicker-from").val().replace(/\//g, "-").replace(" ", "T");
         tzoffset = $("#tzoffset").val() 
         to = $("#datetimepicker-to").val().replace(/\//g, "-").replace(" ", "T");
+        color = $("#color").val();
 
-        var chartUrl = host + "default-widget.html?" + 
-                       "chart=" + chartType + 
-                       "&offering=" + offering +
-                       "&procedure=" + procedure +
-                       "&property=" + property + 
-                       "&from=" + from +  
-                       "&until=" + to;
-        var iframe = "<iframe name='istSOS-chart' src='" + chartUrl + "' width='760' height='550' scrolling='no' frameborder='0'></iframe>";
+        var fromWithOffset = from + tzoffset;
+        var toWithOffset = to + tzoffset;
 
-        $("#txt-iframe").val(iframe);
+        if (!(from === "") && !(to === "")) {
+          if (moment(toWithOffset).isAfter(fromWithOffset)) {
+            var chartUrl = host + "default-widget.html?" + 
+                                  "chart=" + chartType + 
+                                  "&offering=" + offering +
+                                  "&procedure=" + procedure +
+                                  "&property=" + property + 
+                                  "&from=" + fromWithOffset +  
+                                  "&until=" + toWithOffset +
+                                  "&color=" + color;
+            var iframe = "<iframe name='istSOS-chart' src='" + chartUrl + "' width='760' height='550' scrolling='no' frameborder='0'></iframe>";
 
-        $("#embedded").html("<h3>Embedded Chart:</h3>" + iframe);
+            $("#txt-iframe").val(iframe);
+
+            $("#embedded").html("<h3>Embedded Chart:</h3>" + iframe);
+          }
+        }
       });
     </script>
   </body>

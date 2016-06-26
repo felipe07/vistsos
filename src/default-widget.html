@@ -28,6 +28,7 @@
       var property = getURLParameter("property");
       var from = getURLParameter("from");
       var until = getURLParameter("until");
+      var color = getURLParameter("color");
       var jsonSpec = {};
       var measurements = [];
       var vegaMode = "vega-lite"
@@ -64,8 +65,11 @@
           jsonSpec.signals[2].expr = "time(brush_start) === time(brush_end) ? datetime('" + sfrom + "') : min(brush_start, brush_end)";
           jsonSpec.signals[3].init.expr = "datetime('" + suntil + "')";
           jsonSpec.signals[3].expr = "time(brush_start) === time(brush_end) ? datetime('" + suntil + "') : max(brush_start, brush_end)";
+
+          jsonSpec.marks[0].marks[0].marks[0].properties.update.fill.value = "#" + color;
         } else {
           jsonSpec.data.values = measurements;
+          jsonSpec.encoding.color.value = "#" + color;
         }
 
         var embedSpec = { mode: vegaMode, spec: jsonSpec };
